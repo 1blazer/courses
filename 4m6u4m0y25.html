@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" style="--bg: #0f2f6b; --accent: #2563eb; --accent-2: #2563eb;"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why Nobody Is Seeing Your Offers Online</title>
+  <style>
+    :root {
+      --bg: #0f2f6b;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-2: #2563eb;
+      --ok: #166534;
+      --ok-bg: #dcfce7;
+      --bad: #991b1b;
+      --bad-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #0a2352 0%, #0f2f6b 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .wrap { width: min(900px, calc(100% - 28px)); margin: 28px auto 0; padding-bottom: 80px; }
+    .hero { background: var(--panel); border: 1px solid #dbe7ff; border-radius: 24px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+    .eyebrow { font-size: .85rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .squeeze-page { display: block; }
+    .squeeze-card {
+      max-width: 760px;
+      margin: 150px auto 28px;
+      background: var(--panel);
+      border: 1px solid #dbe7ff;
+      border-radius: 24px;
+      padding: 34px 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.16);
+      text-align: center;
+    }
+    .squeeze-card h1,
+    .squeeze-card h2,
+    .squeeze-card p,
+    .squeeze-card div {
+      text-align: center;
+    }
+    .squeeze-card h2 {
+      font-size: clamp(1.2rem, 2.6vw, 1.55rem);
+      line-height: 1.45;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+    .squeeze-embed-box {
+      margin-top: 24px;
+      min-height: 160px;
+      border: 2px dashed #bfdbfe;
+      border-radius: 18px;
+      background: #f8fbff;
+      padding: 18px;
+      text-align: center;
+      font: 500 15px/1.7 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      color: #64748b;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    .squeeze-embed-box.is-empty::before {
+      content: attr(data-placeholder);
+      display: block;
+      color: #64748b;
+      white-space: pre-wrap;
+    }
+    .intro-page { display: block; margin-top: 18px; }
+    .intro-card { background: var(--panel); border: 1px solid #dbe7ff; border-radius: 24px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,.16); transition: transform .2s ease; }
+    .intro-card:hover { transform: translateY(-2px); }
+    .hero + .intro-card { margin-top: 40px; }
+    .intro-message { font-size:17px; line-height:1.7; max-width:680px; margin:0 auto; text-align:center; }
+    .intro-divider { width:60px; height:2px; background:rgba(0,0,0,.08); margin:12px auto 18px; border-radius:2px; }
+    .course-time { display:flex; align-items:center; justify-content:center; gap:6px; margin:20px 0 10px; color:#111827; }
+    .course-time-icon { font-size:18px; opacity:.8; }
+    .course-time-value { font-weight:600; font-size:14px; line-height:1; color:inherit; }
+    .course-time-label { font-weight:600; font-size:14px; opacity:.7; }
+    .intro-start-wrap { text-align:center; margin-top:22px; }
+    .hero .muted { opacity:.82; }
+    .nav-btn.primary { transition: all .2s ease; }
+    .nav-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+    h1, h2, h3, h4 { margin: 0 0 10px; line-height: 1.2; }
+    h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+    p, li { line-height: 1.6; }
+    .muted { color: var(--muted); }
+    .progress-wrap { margin-top: 16px; position: static; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); border: 1px solid #dbe7ff; border-radius: 18px; padding: 14px; box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+    .progress-bar { width: 100%; height: 12px; background: #dbeafe; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #38bdf8); transition: width .25s ease; }
+    .progress-text { margin-top: 8px; font-size: .92rem; color: var(--muted); font-weight: 600; }
+    .lesson { display: none; margin-top: 18px; background: var(--panel); border: 1px solid #dbe7ff; border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.16); min-height: 420px; }
+    .lesson.active { display: block; }
+    .step { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #dbeafe; color: #1d4ed8; font-weight: 700; font-size: .85rem; margin-bottom: 10px; }
+    .lesson-counter { float:right; color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .summary { color: var(--muted); }
+    .module-image-wrap { margin-top: 18px; text-align: center; }
+    .module-image { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 18px; display: block; margin: 0 auto; border: 1px solid var(--border); }
+    .box, .quiz { margin-top: 16px; border: 1px solid var(--border); border-radius: 18px; padding: 18px; background: #fff; }
+    .quiz .options { display: grid; gap: 10px; margin-top: 12px; }
+    .option-btn, .nav-btn, .cta-btn {
+      appearance: none; border: 0; border-radius: 12px; padding: 12px 16px; font: inherit; font-weight: 700; cursor: pointer; transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+    }
+    .option-btn { background: #eff6ff; color: #1e3a8a; text-align: left; border: 1px solid #bfdbfe; }
+    .nav-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 22px; }
+    .nav-btn { background: transparent; color: #0f172a; border: 2px solid #0f2f6b; }
+    .nav-btn.primary, .cta-btn { background: linear-gradient(180deg, var(--accent), var(--accent-2)); color: white; border: 0; box-shadow: 0 10px 20px rgba(37,99,235,.22); }
+    .nav-btn:hover, .cta-btn:hover, .option-btn:hover { transform: translateY(-1px); }
+    .nav-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .feedback { margin-top: 12px; border-radius: 12px; padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border); }
+    .feedback.good { background: var(--ok-bg); color: var(--ok); border-color: #86efac; }
+    .feedback.bad { background: var(--bad-bg); color: var(--bad); border-color: #fca5a5; }
+    .complete { display: none; margin-top: 18px; background: var(--panel); border: 1px solid #dbe7ff; border-radius: 24px; padding: 28px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,.16); }
+    .small { font-size: .92rem; }
+    @media (max-width: 640px) {
+      .nav-row { flex-direction: column; }
+      .nav-btn { width: 100%; }
+    }
+  
+.cta-button a, .cta-button button { text-decoration:none !important; }
+</style>
+
+<style></style></head>
+<body data-course-file="4m6u4m0y25.html" data-has-squeeze="0" spellcheck="false" data-new-gr-c-s-check-loaded="14.1297.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1297.0" style="background: linear-gradient(rgb(10, 35, 82) 0%, rgb(15, 47, 107) 100%);">
+  <div class="wrap">
+    
+    
+
+    <section class="intro-page" id="introPage" style="display: block;">
+      <section class="hero">
+        <div class="eyebrow">Interactive mini-course</div>
+        <h1>Why Nobody Is Seeing Your Offers Online</h1>
+        <p class="muted">Simple Steps to Get Your Links Noticed &amp; Build Real Visibility</p>
+      </section>
+
+      <section class="intro-card" id="introCard">
+        <div class="intro-divider"></div>
+        <p class="intro-message">Welcome! In this course, you'll build a clear understanding of Why Nobody Is Seeing Your Offers Online, and by the end, you'll be in a strong position to apply what you learn with confidence.</p>
+        <div class="course-time">
+          <span class="course-time-icon">◷</span>
+          <span class="course-time-value">20</span>
+          <span class="course-time-label">minutes</span>
+        </div>
+        <div class="intro-start-wrap">
+          <button class="nav-btn primary" onclick="beginCourse()">Let's Get Started - Click Here To Begin</button>
+        </div>
+      </section>
+    </section>
+
+    
+    <div class="progress-wrap" id="progressWrap" style="display: none;">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="background: rgb(37, 99, 235); width: 100%;"></div></div>
+      <div class="progress-text" id="progressText">Complete</div>
+    </div>
+
+    
+        <section class="lesson" data-index="0">
+          <div class="lesson-top">
+            <span class="step">Module 1</span>
+            <span class="lesson-counter">1 / 5</span>
+            <h2>Why Random Posting Doesn’t Get You Seen</h2>
+            <p class="summary">Learn why simply dropping links or posting offers without a strategy fails to get real attention online.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/why-random-posting-doesn-t-get-you-seen.webp" data-export-src="images/why-random-posting-doesn-t-get-you-seen.webp" alt="Why Random Posting Doesn’t Get You Seen" data-editor-resizable="1" style="width: 575.4px; height: 323.663px;">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Random link sharing is ignored or seen as spam</li><li>People need repeated exposure to trust and click</li><li>Consistent presence gets remembered; randomness gets forgotten</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 1</h3>
+            <p>Many beginners think the quickest way to get results is to post their link in as many places as possible. They might drop links into Facebook groups, send it to friends, or post it on Twitter once or twice. But very few people take action this way, and usually, nobody even sees these random posts.</p><p><b>Here’s why</b>: Social platforms are crowded, fast-moving places. A single link blended into a feed is almost invisible. Most people either scroll past it or ignore it because they haven’t learned anything about you or why your offer matters. Visibility only works if you show up consistently and give people a reason to trust you.</p><p>A common mistake is thinking that one big post in lots of places equals results. In reality, random posting is the quickest way to burn out your audience or get ignored entirely. Instead, switch your focus from posting everywhere once to showing up regularly in fewer places where people can actually notice and remember you.</p><p>For your next step, start tracking where and how often you share your offers. Notice if you’re guilty of this random posting pattern.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>Why is random posting of your affiliate links usually ineffective?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">Most people ignore random links and do not build trust</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Random posts create massive viral traffic</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">It guarantees only your friends see your offer</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">People always click on the first link they see</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>Random posting blends in and gets ignored</li><li>People need to see you regularly to remember you</li><li>Consistency is more important than blasting links everywhere</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()" disabled="">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Next Module</button>
+          </div>
+        </section>
+        <section class="lesson" data-index="1">
+          <div class="lesson-top">
+            <span class="step">Module 2</span>
+            <span class="lesson-counter">2 / 5</span>
+            <h2>The Top Mistakes Making Your Offers Invisible</h2>
+            <p class="summary">Understand the most common visibility mistakes and how to avoid them as you build your daily routine.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/the-top-mistakes-making-your-offers-invisible.webp" data-export-src="images/the-top-mistakes-making-your-offers-invisible.webp" alt="The Top Mistakes Making Your Offers Invisible" data-editor-resizable="1" style="width: 664.4px; height: 373.725px;">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Inconsistent posting means fewer people see your offer</li><li>Not giving value or context before sharing links reduces interest</li><li>Relying on only one traffic source limits your reach</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 2</h3>
+            <p>The most common mistake is thinking that visibility means simply posting a link, anytime, anywhere. But when you go silent for long stretches, then suddenly promote, most people have forgotten about you. Inconsistency makes your offers easy to ignore.</p><p>Another mistake is sharing offers without any context. People are drawn to value and stories, not just sales pitches. If all people see from you is a raw link or constant push to buy, they feel sold to, not helped.</p><p>Many beginners try to put all their hopes on one traffic source, like Facebook, and ignore everything else. If your main group or page is quiet or the algorithm changes, your reach drops instantly. Spreading out your presence helps ensure more people see you consistently.</p><p>To move forward, pick one main place to post consistently and always give a bit of value, a tip, or a story before sharing your offer. Start small so you can build the habit.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>What is a common mistake that keeps affiliates invisible online?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">Posting inconsistently and not providing value</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Giving free tips before sharing any link</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Posting in multiple channels consistently</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Building a simple visibility routine</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>Inconsistency causes people to forget your offers</li><li>Adding value before links builds interest and trust</li><li>Avoid putting all your efforts in one spot</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Next Module</button>
+          </div>
+        </section>
+        <section class="lesson" data-index="2">
+          <div class="lesson-top">
+            <span class="step">Module 3</span>
+            <span class="lesson-counter">3 / 5</span>
+            <h2>Building a Simple Daily Visibility Routine</h2>
+            <p class="summary">Learn how to set up a manageable daily plan that puts your offers in front of more people over time.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/building-a-simple-daily-visibility-routine.webp" data-export-src="images/building-a-simple-daily-visibility-routine.webp" alt="Building a Simple Daily Visibility Routine" data-editor-resizable="1" style="width: 591.4px; height: 332.663px;">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Create a short checklist for daily exposure actions</li><li>Choose two main channels and focus your efforts</li><li>Use scheduled posts or reminders to stay consistent</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 3</h3>
+            <p>Instead of trying to do everything, focus on a simple, repeatable routine. Pick two main channels where your target audience actually spends time. For example, this could be a Facebook page and your email list, or a TikTok profile and a niche forum.</p><p>Start each day with a quick checklist of small actions: post a helpful tip, share a story, answer a question, then include your offer where it’s relevant. Keep your posts valuable instead of just dropping your link every time.</p><p>Many people skip days, forget to show up, and wonder why results never come. The key is to use simple reminders, such as calendar alerts or a posting schedule, to nudge yourself into daily action. Scheduled posts on platforms that allow it can make your routine easier and prevent you from missing days.</p><p>Your next step is to build your own checklist. Keep it short and choose actions you’re actually willing to repeat, every day, even when you’re busy.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>What helps you build consistent visibility online?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">Using a daily checklist and focusing on a couple of main channels</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Posting your offer randomly whenever you remember</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Only using one channel and hoping for the best</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Ignoring reminders and posting as inspiration strikes</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>Focus on two main channels for daily actions</li><li>Create a checklist or reminders for consistency</li><li>Make small, valuable posts part of your routine</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Next Module</button>
+          </div>
+        </section>
+        <section class="lesson" data-index="3">
+          <div class="lesson-top">
+            <span class="step">Module 4</span>
+            <span class="lesson-counter">4 / 5</span>
+            <h2>Positioning Your Offers to Be Discovered</h2>
+            <p class="summary">See how to create a central hub and present your offers in a way that attracts the right attention.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/positioning-your-offers-to-be-discovered.webp" data-export-src="images/positioning-your-offers-to-be-discovered.webp" alt="Positioning Your Offers to Be Discovered" data-editor-resizable="1" style="width: 642.4px; height: 361.35px;">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>A central place (hub) helps people find your offers easily</li><li>Use simple profiles or pages to host all your main links</li><li>Position your offer as a solution, not just a link</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 4</h3>
+            <p>A smart visibility strategy includes having a 'home base' where all your best content and offers can be discovered. This could be a simple website, a landing page, or even a well-organized profile link. Without this, your audience has to dig through scattered posts to find you, which most will never do.</p><p>Set up one central spot—such as a link in your Instagram bio, a pinned Facebook post, or a basic landing page—where you can always send people for your latest updates and key offers. Tools like Linktree or simple landing page builders are easy to use for beginners.</p><p>Don’t just drop your link and hope. Add a headline, short story, or quick explanation about who your offer helps and why. This increases curiosity, trust, and clicks.</p><p>Your next step is to create or update your own central hub. Make sure it looks welcoming and gives a reason for someone unfamiliar to stick around and learn more.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>Why should you create a central place for your offers online?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">So people can easily discover and revisit all your offers in one place</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Because social media sites ban all links</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">To avoid answering questions about your product</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">So you never have to post on social media again</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>A central hub makes your offers easy to find</li><li>Profiles and landing pages can serve as your visibility base</li><li>Inviting context and clarity attract more clicks</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Next Module</button>
+          </div>
+        </section>
+        <section class="lesson" data-index="4">
+          <div class="lesson-top">
+            <span class="step">Module 5</span>
+            <span class="lesson-counter">5 / 5</span>
+            <h2>Scaling Your Exposure with Visibility Tools</h2>
+            <p class="summary">Explore practical tools like Daily-Ads and learn how to simplify and automate your visibility efforts.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/scaling-your-exposure-with-visibility-tools.webp" data-export-src="images/scaling-your-exposure-with-visibility-tools.webp" alt="Scaling Your Exposure with Visibility Tools" data-editor-resizable="1" style="width: 587.4px; height: 330.413px;">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Visibility tools automate and expand your daily exposure</li><li>Platforms like Daily-Ads put your offers in front of new audiences</li><li>Automation frees you to focus on building relationships and value</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 5</h3>
+            <p>Once you have your core routine and central hub in place, visibility tools can help you reach more people without multiplying your workload. Daily-Ads, for example, is a platform that lets you schedule your offers for regular exposure to new audiences, saving you from constant manual posting.</p><p>Automation tools post for you on a set schedule or distribute your message in places you may not have reached on your own. This builds momentum and keeps your offers circulating, even when you’re busy with other tasks.</p><p>A common misconception is that automation replaces real connection. The truth is, automation gives you back time, which you can use to add value and engage directly with your audience. By combining consistent manual actions with smart automation, you get the best of both worlds: lasting presence and real engagement.</p><p>As your next step, try out a visibility platform like Daily-Ads, or set up basic post scheduling tools. Use the extra time you save to interact with your audience and strengthen your relationships.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>What is a key benefit of using tools like Daily-Ads for your offers?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">They put your offers in front of new audiences automatically</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">They stop you from ever posting on your own channels</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">They make your offer instantly go viral every time</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">They replace the need to ever engage with people</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>Visibility tools automate exposure and save time</li><li>Platforms like Daily-Ads introduce your offers to new audiences</li><li>Balancing automation with personal engagement builds trust</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Now Click Here To Complete This Course</button>
+          </div>
+        </section>
+
+    <section class="complete" id="completeCard" style="display: none;">
+      <h2>Course Complete</h2>
+      <p>Great job! You're now equipped with the tools and routines you need to consistently get your offers seen online. Keep building your visibility and explore new ways to open up even more traffic and buyers.</p>
+      <p class="muted small">Use the button below to take the next step, or start over and run through the course again.</p>
+      <a class="cta-btn" style="text-decoration:none; margin-top: 18px; display:inline-block;" href="https://llpgpro.com/3ctcgcpv/" target="_blank" rel="noopener noreferrer">Your Signups and Buyer Traffic</a>
+      <div class="nav-row" style="justify-content:center; margin-top: 18px;">
+        <button class="nav-btn" onclick="restartCourse()">Start Over</button>
+      </div>
+      
+    </section>
+  </div>
+
+  <script id="courseRuntimeScript">
+    let currentLesson = 0;
+    const lessons = [...document.querySelectorAll('.lesson')];
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const progressWrap = document.getElementById('progressWrap');
+    const completeCard = document.getElementById('completeCard');
+    const introPage = document.getElementById('introPage');
+    const squeezePage = document.getElementById('squeezePage');
+
+    function beginCourse() {
+      if (introPage) introPage.style.display = 'none';
+      if (squeezePage) squeezePage.style.display = 'none';
+      if (progressWrap) progressWrap.style.display = 'block';
+      completeCard.style.display = 'none';
+      renderLesson();
+    }
+
+    function renderLesson() {
+      lessons.forEach((lesson, index) => lesson.classList.toggle('active', index === currentLesson));
+      if (progressFill && progressText) {
+        const pct = ((currentLesson + 1) / lessons.length) * 100;
+        progressFill.style.width = pct + '%';
+        progressText.textContent = 'Module ' + (currentLesson + 1) + ' of ' + lessons.length;
+      }
+      completeCard.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextLesson() {
+      if (currentLesson < lessons.length - 1) {
+        currentLesson += 1;
+        renderLesson();
+      } else {
+        lessons.forEach(l => l.classList.remove('active'));
+        if (progressFill && progressText) {
+          progressFill.style.width = '100%';
+          progressText.textContent = 'Complete';
+        }
+        completeCard.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function prevLesson() {
+      if (currentLesson > 0) {
+        currentLesson -= 1;
+        renderLesson();
+      }
+    }
+
+    function resetQuiz(btn) {
+      const wrap = btn.closest('.quiz');
+      const feedback = wrap.querySelector('.feedback');
+      wrap.querySelectorAll('.option-btn').forEach(b => b.disabled = false);
+      feedback.textContent = 'Choose an answer.';
+      feedback.className = 'feedback small';
+      const retryBtn = wrap.querySelector('.retry-btn');
+      if (retryBtn) retryBtn.remove();
+    }
+
+    function checkAnswer(btn) {
+      const wrap = btn.closest('.quiz');
+      const feedback = wrap.querySelector('.feedback');
+      wrap.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+      const oldRetry = wrap.querySelector('.retry-btn');
+      if (oldRetry) oldRetry.remove();
+      if (btn.dataset.correct === '1') {
+        feedback.textContent = 'Correct.';
+        feedback.className = 'feedback good';
+      } else {
+        feedback.textContent = 'Not quite. Review the lesson and try again.';
+        feedback.className = 'feedback bad';
+        const retryBtn = document.createElement('button');
+        retryBtn.className = 'nav-btn retry-btn';
+        retryBtn.style.marginTop = '12px';
+        retryBtn.textContent = 'Start quiz again';
+        retryBtn.onclick = function() { resetQuiz(retryBtn); };
+        feedback.insertAdjacentElement('afterend', retryBtn);
+      }
+    }
+
+    function restartCourse() {
+      currentLesson = 0;
+      document.querySelectorAll('.quiz').forEach(wrap => {
+        const feedback = wrap.querySelector('.feedback');
+        wrap.querySelectorAll('.option-btn').forEach(b => b.disabled = false);
+        if (feedback) {
+          feedback.textContent = 'Choose an answer.';
+          feedback.className = 'feedback small';
+        }
+        const retryBtn = wrap.querySelector('.retry-btn');
+        if (retryBtn) retryBtn.remove();
+      });
+      lessons.forEach(l => l.classList.remove('active'));
+      if (introPage) introPage.style.display = 'block';
+      if (squeezePage) squeezePage.style.display = 'block';
+      if (progressWrap) progressWrap.style.display = 'none';
+      completeCard.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    restartCourse();
+  </script>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
