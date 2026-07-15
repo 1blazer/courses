@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" style="--bg: #0f2f6b; --accent: #2563eb; --accent-2: #2563eb;"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Could Your Gums Be Affecting Your Heart?</title>
+  <style>
+    :root {
+      --bg: #0f2f6b;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-2: #2563eb;
+      --ok: #166534;
+      --ok-bg: #dcfce7;
+      --bad: #991b1b;
+      --bad-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #0a2352 0%, #0f2f6b 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .wrap { width: min(900px, calc(100% - 28px)); margin: 28px auto 0; padding-bottom: 80px; }
+    .hero { background: var(--panel); border: 1px solid #dbe7ff; border-radius: 24px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+    .eyebrow { font-size: .85rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .squeeze-page { display: block; }
+    .squeeze-card {
+      max-width: 760px;
+      margin: 150px auto 28px;
+      background: var(--panel);
+      border: 1px solid #dbe7ff;
+      border-radius: 24px;
+      padding: 34px 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.16);
+      text-align: center;
+    }
+    .squeeze-card h1,
+    .squeeze-card h2,
+    .squeeze-card p,
+    .squeeze-card div {
+      text-align: center;
+    }
+    .squeeze-card h2 {
+      font-size: clamp(1.2rem, 2.6vw, 1.55rem);
+      line-height: 1.45;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+    .squeeze-embed-box {
+      margin-top: 24px;
+      min-height: 160px;
+      border: 2px dashed #bfdbfe;
+      border-radius: 18px;
+      background: #f8fbff;
+      padding: 18px;
+      text-align: center;
+      font: 500 15px/1.7 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      color: #64748b;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    .squeeze-embed-box.is-empty::before {
+      content: attr(data-placeholder);
+      display: block;
+      color: #64748b;
+      white-space: pre-wrap;
+    }
+    .intro-page { display: block; margin-top: 18px; }
+    .intro-card { background: var(--panel); border: 1px solid #dbe7ff; border-radius: 24px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,.16); transition: transform .2s ease; }
+    .intro-card:hover { transform: translateY(-2px); }
+    .hero + .intro-card { margin-top: 40px; }
+    .intro-message { font-size:17px; line-height:1.7; max-width:680px; margin:0 auto; text-align:center; }
+    .intro-divider { width:60px; height:2px; background:rgba(0,0,0,.08); margin:12px auto 18px; border-radius:2px; }
+    .course-time { display:flex; align-items:center; justify-content:center; gap:6px; margin:20px 0 10px; color:#111827; }
+    .course-time-icon { font-size:18px; opacity:.8; }
+    .course-time-value { font-weight:600; font-size:14px; line-height:1; color:inherit; }
+    .course-time-label { font-weight:600; font-size:14px; opacity:.7; }
+    .intro-start-wrap { text-align:center; margin-top:22px; }
+    .hero .muted { opacity:.82; }
+    .nav-btn.primary { transition: all .2s ease; }
+    .nav-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+    h1, h2, h3, h4 { margin: 0 0 10px; line-height: 1.2; }
+    h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+    p, li { line-height: 1.6; }
+    .muted { color: var(--muted); }
+    .progress-wrap { margin-top: 16px; position: static; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); border: 1px solid #dbe7ff; border-radius: 18px; padding: 14px; box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+    .progress-bar { width: 100%; height: 12px; background: #dbeafe; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #38bdf8); transition: width .25s ease; }
+    .progress-text { margin-top: 8px; font-size: .92rem; color: var(--muted); font-weight: 600; }
+    .lesson { display: none; margin-top: 18px; background: var(--panel); border: 1px solid #dbe7ff; border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.16); min-height: 420px; }
+    .lesson.active { display: block; }
+    .step { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #dbeafe; color: #1d4ed8; font-weight: 700; font-size: .85rem; margin-bottom: 10px; }
+    .lesson-counter { float:right; color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .summary { color: var(--muted); }
+    .module-image-wrap { margin-top: 18px; text-align: center; }
+    .module-image { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 18px; display: block; margin: 0 auto; border: 1px solid var(--border); }
+    .box, .quiz { margin-top: 16px; border: 1px solid var(--border); border-radius: 18px; padding: 18px; background: #fff; }
+    .quiz .options { display: grid; gap: 10px; margin-top: 12px; }
+    .option-btn, .nav-btn, .cta-btn {
+      appearance: none; border: 0; border-radius: 12px; padding: 12px 16px; font: inherit; font-weight: 700; cursor: pointer; transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+    }
+    .option-btn { background: #eff6ff; color: #1e3a8a; text-align: left; border: 1px solid #bfdbfe; }
+    .nav-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 22px; }
+    .nav-btn { background: transparent; color: #0f172a; border: 2px solid #0f2f6b; }
+    .nav-btn.primary, .cta-btn { background: linear-gradient(180deg, var(--accent), var(--accent-2)); color: white; border: 0; box-shadow: 0 10px 20px rgba(37,99,235,.22); }
+    .nav-btn:hover, .cta-btn:hover, .option-btn:hover { transform: translateY(-1px); }
+    .nav-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .feedback { margin-top: 12px; border-radius: 12px; padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border); }
+    .feedback.good { background: var(--ok-bg); color: var(--ok); border-color: #86efac; }
+    .feedback.bad { background: var(--bad-bg); color: var(--bad); border-color: #fca5a5; }
+    .complete { display: none; margin-top: 18px; background: var(--panel); border: 1px solid #dbe7ff; border-radius: 24px; padding: 28px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,.16); }
+    .small { font-size: .92rem; }
+    @media (max-width: 640px) {
+      .nav-row { flex-direction: column; }
+      .nav-btn { width: 100%; }
+    }
+  
+.cta-button a, .cta-button button { text-decoration:none !important; }
+</style>
+
+<style></style></head>
+<body data-course-file="index.html" data-has-squeeze="0" spellcheck="false" data-new-gr-c-s-check-loaded="14.1308.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1308.0" style="background: linear-gradient(rgb(10, 35, 82) 0%, rgb(15, 47, 107) 100%);">
+  <div class="wrap">
+    
+
+    <section class="intro-page" id="introPage" style="display: block;">
+      <section class="hero">
+        <div class="eyebrow">Interactive mini-course</div>
+        <h1>&nbsp;The dental connection: Surprising ways your teeth affect your whole bodyDon't ignore the signs</h1>
+        <p class="muted">The evidence-backed link between gum inflammation and whole-body health, plus what to do about it.</p>
+      </section>
+
+      <section class="intro-card" id="introCard">
+        <div class="intro-divider"></div>
+        <p class="intro-message">Welcome! In this course, you'll build a clear understanding of Could Your Gums Be Affecting Your Heart, and by the end you'll be in a strong position to apply what you learn with confidence.</p>
+        <div class="course-time">
+          <span class="course-time-icon">◷</span>
+          <span class="course-time-value">28</span>
+          <span class="course-time-label">minutes</span>
+        </div>
+        <div class="intro-start-wrap">
+          <button class="nav-btn primary" onclick="beginCourse()">Let's Get Started - Click Here To Begin</button>
+        </div>
+      </section>
+    </section>
+
+    
+    <div class="progress-wrap" id="progressWrap" style="display: none;">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="background: rgb(37, 99, 235); width: 100%;"></div></div>
+      <div class="progress-text" id="progressText">Complete</div>
+    </div>
+
+    
+        <section class="lesson" data-index="0">
+          <div class="lesson-top">
+            <span class="step">Module 1</span>
+            <span class="lesson-counter">1 / 5</span>
+            <h2>Connect the dots: How gum inflammation can influence your whole-body health</h2>
+            <p class="summary">Learn the core biology behind why inflamed gums are not just a mouth problem and how that can translate into measurable risks elsewhere in the body.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/connect-the-dots-how-gum-inflammation-can-influence-your-whole-body-health.webp" data-export-src="images/connect-the-dots-how-gum-inflammation-can-influence-your-whole-body-health.webp" alt="Connect the dots: How gum inflammation can influence your whole-body health" data-editor-resizable="1">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Define gingivitis vs periodontitis and identify where you likely fall today</li><li>Understand the inflammation pathway: bacteria, immune response, and bloodstream exposure</li><li>List the top systemic conditions most often associated with periodontal disease (including cardiovascular risk)</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 1</h3>
+            <p>When people think about health, they picture blood pressure, cholesterol, steps, sleep, and food. The mouth often gets treated like a separate zone, even though it is a heavily vascular area that can act like an entry point for bacteria and a driver of chronic inflammation.</p><p>Here is the foundation: gum disease begins as gingivitis, where plaque bacteria irritate the gumline and trigger bleeding and swelling. If that inflammation persists, the attachment between gum and tooth can weaken. In periodontitis, deeper pockets form, allowing more bacteria to thrive below the gumline. That persistent infection can raise inflammatory signals in the body and can allow bacterial byproducts, and sometimes bacteria, to enter the bloodstream during everyday activities like brushing or chewing.</p><p>A practical example: someone who notices bleeding when flossing may ignore it because it does not hurt. Over months, they may also notice morning bad breath and some gum recession. If they also have risk factors like smoking, diabetes, high stress, or a family history of gum disease, that mild bleeding can be an early sign of a process that is quietly increasing systemic inflammatory burden.</p><p>A common misconception is: bleeding means you should floss less. In reality, bleeding is often a sign you need better plaque removal and a gentler technique, plus professional assessment if it persists. Another misconception is that gum disease is inevitable with age. It is common, not inevitable.</p><p>What to do next: do a quick self-check tonight. Look for bleeding, puffiness, persistent bad breath, sensitivity at the gumline, loose teeth, or gums pulling away. If you have two or more of these signs, plan for a dental visit focused on periodontal evaluation and start a consistent home routine you will build in Lesson 3.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>Which statement best explains why gum disease can affect overall health?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Gum disease mainly affects the enamel, which weakens bones throughout the body</button>
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">Chronic gum inflammation can increase systemic inflammatory signals and allow bacterial byproducts into circulation</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Gum disease changes saliva pH, which directly raises LDL cholesterol</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Gum disease only matters if you already have cavities</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>Gum disease is a chronic inflammatory condition, not just a cosmetic issue.</li><li>Inflamed gums can increase systemic inflammation and expose the bloodstream to bacterial byproducts.</li><li>Bleeding is a signal to improve care and assess, not a reason to avoid flossing.</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()" disabled="">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Next Module</button>
+          </div>
+        </section>
+        <section class="lesson" data-index="1">
+          <div class="lesson-top">
+            <span class="step">Module 2</span>
+            <span class="lesson-counter">2 / 5</span>
+            <h2>Understand the gum to heart link: What research suggests and what it does not</h2>
+            <p class="summary">Differentiate correlation from causation and learn the most plausible mechanisms connecting periodontal disease with cardiovascular risk.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/understand-the-gum-to-heart-link-what-research-suggests-and-what-it-does-not.webp" data-export-src="images/understand-the-gum-to-heart-link-what-research-suggests-and-what-it-does-not.webp" alt="Understand the gum to heart link: What research suggests and what it does not" data-editor-resizable="1">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Separate association from proof and learn what studies typically show</li><li>Explain the key mechanisms: endothelial dysfunction, inflammatory markers, and plaque stability</li><li>Identify the shared risk factors that can make gum disease and heart disease travel together</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 2</h3>
+            <p>You have probably seen headlines that say gum disease causes heart disease. The more accurate, evidence-aligned framing is: periodontal disease is associated with increased cardiovascular risk, and there are biologically plausible pathways that could help explain the link.</p><p>Two things can be true at once. First, people with periodontitis often have higher rates of cardiovascular disease. Second, some of that relationship may be explained by shared risk factors: smoking, diabetes, socioeconomic barriers to care, chronic stress, poor diet, and limited access to preventive health services. This is why it is important to avoid overclaiming.</p><p>The strongest mechanistic ideas focus on inflammation and vascular health. Chronic periodontal infection can elevate systemic inflammatory markers such as C-reactive protein in some individuals. Inflammation can contribute to endothelial dysfunction, meaning the blood vessel lining becomes less able to regulate dilation and more prone to irritation. There is also interest in how chronic inflammation might influence atherosclerotic plaque behavior, including plaque stability, which matters for events like heart attacks.</p><p>A practical example: a health-conscious person improves diet and exercise, but their gum bleeding continues for years. If lab work shows persistently elevated inflammatory markers without an obvious explanation, periodontal evaluation becomes a reasonable part of the investigation, alongside sleep, weight, metabolic health, and other factors.</p><p>A common mistake is treating gum care like a replacement for medical care, or assuming that a deep cleaning alone is a heart protection plan. Another mistake is thinking that if your gums do not hurt, nothing is wrong. Periodontitis is often painless until later stages.</p><p>What to do next: treat gum health as a risk modifier you can control, not a magic switch. If you have cardiovascular risk factors, bring oral health into your prevention plan. Ask your dental team about pocket depths, bleeding on probing, and whether you would benefit from periodontal maintenance intervals shorter than the standard six months.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>What is the most accurate way to describe the relationship between gum disease and heart disease?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Gum disease has been proven to directly cause heart attacks in all people</button>
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">Gum disease is associated with higher cardiovascular risk, potentially through inflammation and shared risk factors</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Heart disease causes gum disease by reducing saliva production</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">There is no credible biological pathway connecting oral inflammation to vascular health</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>The gum to heart relationship is an association with plausible biological mechanisms.</li><li>Shared risk factors explain part of the link, so your plan should address both mouth and lifestyle.</li><li>Use gum health as a controllable input into a broader cardiovascular prevention strategy.</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Next Module</button>
+          </div>
+        </section>
+        <section class="lesson" data-index="2">
+          <div class="lesson-top">
+            <span class="step">Module 3</span>
+            <span class="lesson-counter">3 / 5</span>
+            <h2>Apply a daily gum-defense routine that targets plaque where it actually hides</h2>
+            <p class="summary">Build a daily routine that reduces bleeding and inflammation by improving removal of plaque at the gumline and between teeth.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/apply-a-daily-gum-defense-routine-that-targets-plaque-where-it-actually-hides.webp" data-export-src="images/apply-a-daily-gum-defense-routine-that-targets-plaque-where-it-actually-hides.webp" alt="Apply a daily gum-defense routine that targets plaque where it actually hides" data-editor-resizable="1">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Choose the right tools: soft brush, interdental cleaners, and optional antimicrobial rinses</li><li>Use technique standards: angle, pressure, timing, and consistency that improve results</li><li>Track two outcomes weekly: bleeding frequency and gumline tenderness</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 3</h3>
+            <p>Most people believe they are brushing well because they brush often. The real lever is whether you are disrupting plaque at the gumline and between teeth, consistently, with a technique you can repeat.</p><p>Start with brushing: use a soft bristle brush and place the bristles at about a 45 degree angle toward the gumline. Use small, gentle motions that massage the margin instead of scrubbing horizontally. Two minutes is a minimum, but the key is coverage, especially along the gumline of the back teeth. If you use an electric brush, let it do the work and reduce pressure.</p><p>Next is interdental cleaning, which is where many gum problems live. Floss is useful, but not always the easiest. Interdental brushes can be more effective for many people, especially where there is space between teeth. The right size should slide in with gentle resistance, not force. Aim for once daily. If you are starting from zero, start with four days per week and build upward to avoid burnout.</p><p>A practical example: if you bleed every time you floss, use a gentler C-shape technique around each tooth and try an interdental brush in the back where flossing is hardest. Expect some bleeding for a week or two as inflamed tissue is disturbed. If bleeding worsens or persists beyond two weeks with consistent technique, that is a sign to get professional evaluation.</p><p>A common mistake is thinking mouthwash can replace mechanical cleaning. Rinses can support, not substitute. Another mistake is using too much force, which can contribute to recession and sensitivity.</p><p>What to do next: set a 14 day experiment. Keep your tools visible, set a nightly reminder, and track bleeding on a simple scale: none, spots, or consistent. Bring that data to your hygienist or dentist. It makes your appointment more precise and action-oriented.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>Which approach best targets plaque at the gumline while minimizing trauma?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Firm horizontal scrubbing with a medium bristle brush for 30 seconds</button>
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">Gentle brushing with a soft brush angled toward the gumline plus daily interdental cleaning</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Rinsing with mouthwash twice a day and brushing only when food is stuck</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Using a hard bristle brush to remove stains and skipping floss to avoid bleeding</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>Plaque control depends on technique and coverage, not just frequency.</li><li>Interdental cleaning is often the missing step for reducing gum inflammation.</li><li>Track bleeding trends for 14 days to know if your routine is working.</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Next Module</button>
+          </div>
+        </section>
+        <section class="lesson" data-index="3">
+          <div class="lesson-top">
+            <span class="step">Module 4</span>
+            <span class="lesson-counter">4 / 5</span>
+            <h2>Refine with professional care: Read your periodontal numbers and choose the right maintenance plan</h2>
+            <p class="summary">Learn how periodontal exams work and how to turn pocket depths, bleeding scores, and X-rays into a clear care plan.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/refine-with-professional-care-read-your-periodontal-numbers-and-choose-the-right-maintenance-plan.webp" data-export-src="images/refine-with-professional-care-read-your-periodontal-numbers-and-choose-the-right-maintenance-plan.webp" alt="Refine with professional care: Read your periodontal numbers and choose the right maintenance plan" data-editor-resizable="1">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Interpret key measures: pocket depth, bleeding on probing, recession, and bone levels</li><li>Know what common treatments do: scaling and root planing, periodontal maintenance, and adjuncts</li><li>Prepare questions that improve your appointment outcomes and avoid under-treatment</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 4</h3>
+            <p>Home care is essential, but professional assessment is how you learn whether inflammation is superficial or whether there is deeper disease that requires more than routine cleanings.</p><p>Periodontal probing measures the space between the tooth and gum. Shallow healthy sites are commonly 1 to 3 mm without bleeding. Deeper readings can suggest periodontal pocketing, especially when paired with bleeding on probing, swelling, or radiographic bone loss. Recession matters too, because a 3 mm pocket with significant recession may still reflect attachment loss. X-rays help show bone levels, which is critical for staging disease.</p><p>A practical example: you are told you have a few 5 mm pockets in the back with bleeding. That is not a reason to panic, but it is a reason to get clear on the plan. Depending on the pattern, your provider may recommend scaling and root planing to disrupt bacteria below the gumline, followed by periodontal maintenance visits every 3 to 4 months for a period of time. Improvement is often measured by reduced bleeding and reduced pocket depths over time.</p><p>A common misconception is that a deep cleaning is a one-time reset. Periodontitis is better thought of as a chronic condition that can be stabilized. Another mistake is chasing whitening or cosmetic dentistry while ignoring bleeding and pockets. Cosmetics can wait. Infection control cannot.</p><p>What to do next: at your next visit, ask for your periodontal charting and keep a copy. Ask: where are the deepest pockets, where is bleeding, is there bone loss, and what is the maintenance interval recommendation. If you have medical conditions like diabetes or cardiovascular risk, tell your dental team. Coordinated care can influence how aggressively inflammation should be managed.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>Which combination most strongly suggests active periodontal inflammation that needs attention?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">1 to 3 mm pockets with no bleeding and no bone loss</button>
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">4 to 6 mm pockets with bleeding on probing and signs of bone loss on X-ray</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">White spots on enamel with normal probing and no bleeding</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Occasional tooth sensitivity to cold with no bleeding and normal X-rays</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>Pocket depths, bleeding, and bone levels are the core data of periodontal health.</li><li>Treatment aims to reduce inflammation and stabilize attachment, not just make teeth feel clean.</li><li>A personalized maintenance interval is often the difference between relapse and stability.</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Next Module</button>
+          </div>
+        </section>
+        <section class="lesson" data-index="4">
+          <div class="lesson-top">
+            <span class="step">Module 5</span>
+            <span class="lesson-counter">5 / 5</span>
+            <h2>Next steps: Build your 30-day mouth to body plan and know when to escalate care</h2>
+            <p class="summary">Create a realistic 30-day plan that ties oral hygiene habits to broader health goals and identifies red flags that require prompt professional help.</p>
+          </div>
+
+          
+          <div class="module-image-wrap">
+            <img class="module-image" src="images/next-steps-build-your-30-day-mouth-to-body-plan-and-know-when-to-escalate-care.webp" data-export-src="images/next-steps-build-your-30-day-mouth-to-body-plan-and-know-when-to-escalate-care.webp" alt="Next steps: Build your 30-day mouth to body plan and know when to escalate care" data-editor-resizable="1">
+          </div>
+
+          <div class="box">
+            <h3>What you'll learn</h3>
+            <ul><li>Create a 30-day schedule: daily routine, weekly tracking, and dental follow-up dates</li><li>Align oral care with systemic goals: diabetes control, blood pressure, and inflammation reduction</li><li>Know red flags: persistent bleeding, loose teeth, swelling, or bad taste that does not resolve</li></ul>
+          </div>
+
+          <div class="box">
+            <h3>Module 5</h3>
+            <p>The goal is not to become a dental expert. The goal is to reduce a chronic source of inflammation and infection so your overall health plan has fewer obstacles.</p><p>Build a 30-day plan that is simple enough to execute. Daily: brush twice with gumline-focused technique and do interdental cleaning once. Optional: if your dentist recommends it, use an antimicrobial rinse for a limited window, not as a permanent crutch. Weekly: pick one day to score bleeding and tenderness, and take two photos of your gumline in consistent lighting. This creates feedback, which is how habits become stable.</p><p>Now connect mouth to body: if you track blood pressure, glucose, sleep, or weight, keep oral metrics alongside them. People often separate these. But if your gums are bleeding daily, that is a health signal worth treating with the same seriousness as elevated blood pressure. If you have diabetes, improving gum inflammation can support better glucose control for some individuals, and better glucose control can support gum healing. It is a two-way relationship.</p><p>A practical example: you schedule a periodontal evaluation, then commit to 30 days of consistent home care. At day 14, bleeding decreases from consistent to spots. At day 30, it is occasional. That is meaningful progress. If it does not change, that data supports escalating to a more thorough evaluation or updated treatment.</p><p>A common mistake is waiting for pain. Gum disease often advances quietly. Another mistake is inconsistency: brushing well for three days and then stopping for four. Inflammation responds to consistency.</p><p>What to do next: book the next appropriate appointment now, not later. Bring your 30-day tracking notes. If you have red flags like swelling, pus, loose teeth, or a persistent bad taste, do not wait for a routine cleaning. Call for an earlier assessment. Then, if you want guided next steps, use the button below to explore tools and programs that can help you follow through.</p>
+          </div>
+
+          
+          <div class="quiz">
+            <h4>Quick Check</h4>
+            <p>Which situation is a strong reason to escalate from routine home care to prompt professional evaluation?</p>
+            <div class="options">
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Bleeding improves noticeably within 10 days of consistent interdental cleaning</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">You miss one night of flossing but resume the next day</button>
+              
+                <button class="option-btn" data-correct="1" onclick="checkAnswer(this)">Persistent gum swelling with a bad taste or drainage near a tooth</button>
+              
+                <button class="option-btn" data-correct="0" onclick="checkAnswer(this)">Mild sensitivity after switching to a new toothpaste for two days</button>
+              
+            </div>
+            <div class="feedback small">Choose an answer.</div>
+          </div>
+
+          
+          <div class="box recap">
+            <h3>Recap</h3>
+            <ul><li>A simple 30-day plan with tracking turns gum care into a measurable health habit.</li><li>Oral inflammation and systemic health often influence each other, especially with diabetes and cardiovascular risk.</li><li>Red flags justify prompt care even if there is little or no pain.</li></ul>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" onclick="prevLesson()">Previous</button>
+            <button class="nav-btn primary" onclick="nextLesson()">Now Click Here To Complete This Course</button>
+          </div>
+        </section>
+
+    <section class="complete" id="completeCard" style="display: none;">
+      <h2>Course Complete</h2>
+      <p>You now have a practical, step-by-step framework to connect gum health to systemic health risks, spot warning signs early, and act with a daily routine and a dental care plan you can actually follow. Take the next step by choosing a program or toolset that fits your goals and start tracking improvements over the next 30 days.</p>
+      <p class="muted small">Use the button below to take the next step, or start over and run through the course again.</p>
+      <a class="cta-btn" style="text-decoration:none; margin-top: 18px; display:inline-block;" href="https://d81f7-izpfsp3sc4t864f5-gfq.hop.clickbank.net" target="_blank" rel="noopener noreferrer">Take the next step.</a>
+      <div class="nav-row" style="justify-content:center; margin-top: 18px;">
+        <button class="nav-btn" onclick="restartCourse()">Start Over</button>
+      </div>
+      
+    </section>
+  </div>
+
+  <script id="courseRuntimeScript">
+    let currentLesson = 0;
+    const lessons = [...document.querySelectorAll('.lesson')];
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const progressWrap = document.getElementById('progressWrap');
+    const completeCard = document.getElementById('completeCard');
+    const introPage = document.getElementById('introPage');
+    const squeezePage = document.getElementById('squeezePage');
+
+    function beginCourse() {
+      if (introPage) introPage.style.display = 'none';
+      if (squeezePage) squeezePage.style.display = 'none';
+      if (progressWrap) progressWrap.style.display = 'block';
+      completeCard.style.display = 'none';
+      renderLesson();
+    }
+
+    function renderLesson() {
+      lessons.forEach((lesson, index) => lesson.classList.toggle('active', index === currentLesson));
+      if (progressFill && progressText) {
+        const pct = ((currentLesson + 1) / lessons.length) * 100;
+        progressFill.style.width = pct + '%';
+        progressText.textContent = 'Module ' + (currentLesson + 1) + ' of ' + lessons.length;
+      }
+      completeCard.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextLesson() {
+      if (currentLesson < lessons.length - 1) {
+        currentLesson += 1;
+        renderLesson();
+      } else {
+        lessons.forEach(l => l.classList.remove('active'));
+        if (progressFill && progressText) {
+          progressFill.style.width = '100%';
+          progressText.textContent = 'Complete';
+        }
+        completeCard.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function prevLesson() {
+      if (currentLesson > 0) {
+        currentLesson -= 1;
+        renderLesson();
+      }
+    }
+
+    function resetQuiz(btn) {
+      const wrap = btn.closest('.quiz');
+      const feedback = wrap.querySelector('.feedback');
+      wrap.querySelectorAll('.option-btn').forEach(b => b.disabled = false);
+      feedback.textContent = 'Choose an answer.';
+      feedback.className = 'feedback small';
+      const retryBtn = wrap.querySelector('.retry-btn');
+      if (retryBtn) retryBtn.remove();
+    }
+
+    function checkAnswer(btn) {
+      const wrap = btn.closest('.quiz');
+      const feedback = wrap.querySelector('.feedback');
+      wrap.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+      const oldRetry = wrap.querySelector('.retry-btn');
+      if (oldRetry) oldRetry.remove();
+      if (btn.dataset.correct === '1') {
+        feedback.textContent = 'Correct.';
+        feedback.className = 'feedback good';
+      } else {
+        feedback.textContent = 'Not quite. Review the lesson and try again.';
+        feedback.className = 'feedback bad';
+        const retryBtn = document.createElement('button');
+        retryBtn.className = 'nav-btn retry-btn';
+        retryBtn.style.marginTop = '12px';
+        retryBtn.textContent = 'Start quiz again';
+        retryBtn.onclick = function() { resetQuiz(retryBtn); };
+        feedback.insertAdjacentElement('afterend', retryBtn);
+      }
+    }
+
+    function restartCourse() {
+      currentLesson = 0;
+      document.querySelectorAll('.quiz').forEach(wrap => {
+        const feedback = wrap.querySelector('.feedback');
+        wrap.querySelectorAll('.option-btn').forEach(b => b.disabled = false);
+        if (feedback) {
+          feedback.textContent = 'Choose an answer.';
+          feedback.className = 'feedback small';
+        }
+        const retryBtn = wrap.querySelector('.retry-btn');
+        if (retryBtn) retryBtn.remove();
+      });
+      lessons.forEach(l => l.classList.remove('active'));
+      if (introPage) introPage.style.display = 'block';
+      if (squeezePage) squeezePage.style.display = 'block';
+      if (progressWrap) progressWrap.style.display = 'none';
+      completeCard.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    restartCourse();
+  </script>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true" style="visibility: visible !important;"></grammarly-desktop-integration></html>
